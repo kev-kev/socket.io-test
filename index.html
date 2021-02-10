@@ -68,7 +68,7 @@
 
       function addMessageLi(msg) {
         var item = document.createElement("li");
-        item.textContent = input.value;
+        item.textContent = msg;
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
       }
@@ -82,13 +82,17 @@
         }
       });
 
-      socket.on("user joined", (data) => {
+      socket.on("user joined", () => {
         addMessageLi("New User Joined");
       });
 
-      socket.on("chat message", function (msg) {
+      socket.on("chat message", (msg) => {
         addMessageLi(msg);
       });
+
+      socket.on("user disconnected", () => {
+        addMessageLi("User disconnected")
+      })
     </script>
   </body>
 </html>
