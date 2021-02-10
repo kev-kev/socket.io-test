@@ -11,16 +11,18 @@ http.listen(3000, () => {
 });
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
   socket.broadcast.emit("user joined");
+  socket.username = "Guest"
+  
+  socket.on("set username", (username) => {
+    socket.username = username;
+  });
 
   socket.on("disconnect", () => {
-    console.log("a user disconnected");
     io.emit("user disconnected");
   });
 
   socket.on("chat message", (msg) => {
-    console.log("message: " + msg);
-    socket.broadcast.emit("chat message", msg);
+    socket.broadcast.emit("chat message", {msg, username: socket.username});
   });
 });
